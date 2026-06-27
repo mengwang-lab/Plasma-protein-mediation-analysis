@@ -31,3 +31,7 @@ The R environment used for the analyses can be recreated using the provided cond
 ```bash
 conda env create -f env/manuscript_r_environment.yml
 conda activate manuscript-r-env
+
+## License
+
+MIT License.
