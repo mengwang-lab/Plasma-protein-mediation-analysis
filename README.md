@@ -5,9 +5,8 @@ In this study, we investigated the role of clinically accessible plasma proteomi
 
 One small issue: because this section contains nested code blocks, GitHub may occasionally format it incorrectly when copied all at once. A safer version is below, using four backticks around the full section:
 
-````markdown
 ## Repository structure
-
+````markdown
 ```text
 your-manuscript-repo/
 ├── README.md
