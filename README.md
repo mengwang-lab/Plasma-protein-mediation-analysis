@@ -3,9 +3,6 @@ Cardiometabolic diseases such as diabetes, hypertension, and dyslipidemia often 
 <img width="468" height="350" alt="image" src="https://github.com/user-attachments/assets/7db32ffa-3689-484a-9a41-19b339b81170" />
 
 
-
-One small issue: because this section contains nested code blocks, GitHub may occasionally format it incorrectly when copied all at once. A safer version is below, using four backticks around the full section:
-
 ## Repository structure
 ````markdown
 ├── README.md
