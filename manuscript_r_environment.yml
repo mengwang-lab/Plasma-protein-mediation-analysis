@@ -1,0 +1,36 @@
+name: manuscript-r-env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+channel_priority: strict
+
+dependencies:
+  # Core R environment
+  - r-base>=4.3
+  - r-essentials
+
+  # Manuscript R packages
+  - r-glmnet
+  - r-xgboost
+  - bioconductor-clusterprofiler
+
+  # Utilities for packages not always available through conda
+  - r-biocmanager
+  - r-remotes
+
+  # Optional but useful system/build dependencies for installing R packages from source
+  - compilers
+  - make
+  - pkg-config
+  - libcurl
+  - openssl
+  - libxml2
+
+# After creating the conda environment, install TwoSampleMR inside R with:
+#
+# conda activate manuscript-r-env
+# R -e 'install.packages("TwoSampleMR", repos = c("https://mrcieu.r-universe.dev", "https://cloud.r-project.org"))'
+#
+# If the r-universe installation fails on Linux/HPC, use:
+# R -e 'remotes::install_github("MRCIEU/TwoSampleMR")'
