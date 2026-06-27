@@ -8,7 +8,7 @@ One small issue: because this section contains nested code blocks, GitHub may oc
 ````markdown
 ## Repository structure
 
-```test
+```text
 your-manuscript-repo/
 ├── README.md
 ├── env/
