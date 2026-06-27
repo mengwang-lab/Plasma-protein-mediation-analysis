@@ -1,2 +1,15 @@
 In this study, we investigated the role of clinically accessible plasma proteomics as mediators in the development pathways from primary to secondary diseases under the causal inference framework using data from approximately 50,000 UK Biobank participants. Across three primary diseases (diabetes, hypertension, and dyslipidemia) and 18 subsequent conditions spanning four clinical domains, we identified 1,461 significant mediation pathways involving 395 unique plasma proteins.
 <img width="468" height="350" alt="image" src="https://github.com/user-attachments/assets/7db32ffa-3689-484a-9a41-19b339b81170" />
+
+your-manuscript-repo/
+├── README.md
+├── manuscript_r_environment.yml
+├── install_TwoSampleMR.R
+├── R/
+│   ├── mediation_analysis.R
+│   ├── mr_analysis.R
+│   └── prediction_model.R
+├── data/
+│   └── README.md
+└── results/
+    └── README.md
