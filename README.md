@@ -24,7 +24,7 @@ your-manuscript-repo/
 │   └── README.md
 └── results/
     └── README.md
-```
+
 ````
 
 ## Environment setup
