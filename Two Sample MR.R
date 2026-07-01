@@ -1,23 +1,55 @@
-# Load necessary libraries
-library(data.table)
-library(TwoSampleMR)
-library(ieugwasr)
-library(biomaRt)
-library(futile.logger)
-library(progress)
-library(dplyr)
+# =============================================================================
+# Configuration for two-sample MR analysis using UKB-PPP pQTL data and OpenGWAS
+#
+# Note:
+# - Do not hard-code JWT tokens, passwords, or private paths in public scripts.
+# - Set the OpenGWAS JWT as an environment variable instead.
+# - Update the paths below according to your local or cluster environment.
+# =============================================================================
 
-# Set up logging
-flog.appender(appender.file("mr_analysis_final_check_cd163_plin1_new.log"))
 
-# Configuration
-opengwas_jwt<-"eyJhbGciOiJSUzI1NiIsImtpZCI6ImFwaS1qd3QiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhcGkub3Blbmd3YXMuaW8iLCJhdWQiOiJhcGkub3Blbmd3YXMuaW8iLCJzdWIiOiJrYWloZS5wbHVzQGdtYWlsLmNvbSIsImlhdCI6MTczNTg0ODM5MCwiZXhwIjoxNzM3MDU3OTkwfQ.oefTp-9QCCVOveN436eYtdVbYj4C-1yWfAh7BlraEs0e0sMW5F_d9NwxmKandtNWJ-MQ3fVyonlF2uGdTt5hvNix6OLy0FzlTwqZu86GrEuf7rA2SNYLUAMRWOQHEuLec2tlJnX_M_KfXNSHbvI_r4y_8cfLuArTdmZMl8EqytPUs8oGdgElZI5eTasXIGbvQ_cE60MDY8hRDVOminqYGMswG6nFbExZiO1LGQhQ4uuyluMFiKPfUY9rfaqSZCoiAYlYLokHYAwnM8OLYIBeEk3mp7Vy8ZjA-3vowqkK7n0CbUYpibtFw3tehPUObji7zTT_usHC0TrpTYytdSOCPw"
-pqtl_path <- "/scratch/mwmeng_root/mwmeng0/shared_data/UKB PQTL/Output"
-result_path <- "/scratch/mwmeng_root/mwmeng0/shared_data/UKB PQTL/TwoSampleMR"
-#rsid_map_file <- "F:/UKB/Data/ref_olink_rsid_map_mac5_info03_b0_7_all_chr_patched_v2.csv"
-rsid_map_file <-"/scratch/mwmeng_root/mwmeng0/shared_data/UKB PQTL/ref_olink_rsid_map_mac5_info03_b0_7_all_chr_patched_v2.csv"
-plink_path <- "/scratch/mwmeng_root/mwmeng0/shared_data/UKB PQTL/plink/plink"
-bfile_path <- "/scratch/mwmeng_root/mwmeng0/shared_data/UKB PQTL/ref_openGWAS_1kg_v3_LD_EUR/EUR"
+# ---- OpenGWAS authentication ------------------------------------------------
+
+# Recommended:
+# Store your token in ~/.Renviron as:
+# OPENGWAS_JWT=your_token_here
+#
+# Then restart R and load it using:
+opengwas_jwt <- Sys.getenv("OPENGWAS_JWT")
+
+if (opengwas_jwt == "") {
+  stop("OpenGWAS JWT not found. Please set OPENGWAS_JWT in your environment.")
+}
+
+
+# ---- Project paths ----------------------------------------------------------
+
+project_dir <- "path/to/project"
+
+pqtl_path <- file.path(
+  project_dir,
+  "data/pqtl"
+)
+
+result_path <- file.path(
+  project_dir,
+  "results/two_sample_mr"
+)
+
+rsid_map_file <- file.path(
+  project_dir,
+  "data/reference/ref_olink_rsid_map_mac5_info03_b0_7_all_chr_patched_v2.csv"
+)
+
+plink_path <- file.path(
+  project_dir,
+  "tools/plink/plink"
+)
+
+bfile_path <- file.path(
+  project_dir,
+  "data/reference/ref_openGWAS_1kg_v3_LD_EUR/EUR"
+)
 
 
 # Load RSID map
