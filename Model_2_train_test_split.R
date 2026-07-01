@@ -2,10 +2,54 @@ library(readr)
 library(ggrepel)
 library(ggplot2)
 library(tidyverse)
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Diabetes as X cleaned data wide interval.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/hypentensive 1 as X cleaned data wide interval.RData")
 
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Wrap Up/Data/protein clinical training id.RData")
+# ============================================================
+# Load analysis-ready datasets
+# ============================================================
+# Raw UK Biobank data are not included in this repository.
+# Users should prepare the required analysis-ready .RData files
+# after obtaining access to UK Biobank data.
+#
+# Expected input files:
+#   1. X exposure data, e.g., diabetes or hypertension
+#   2. Training dataset containing participant IDs, clinical covariates,
+#      and plasma protein expression data
+# ============================================================
+
+
+# ------------------------------------------------------------
+# File paths
+# ------------------------------------------------------------
+
+data_dir <- "data/processed"
+
+x_file <- file.path(data_dir, "x_diabetes_cleaned_wide_interval.RData")
+# x_file <- file.path(data_dir, "x_hypertension_cleaned_wide_interval.RData")
+
+protein_clinical_train_file <- file.path(
+  data_dir,
+  "protein_clinical_training_data.RData"
+)
+
+
+# ------------------------------------------------------------
+# Load exposure data
+# ------------------------------------------------------------
+
+load(x_file)
+
+# Example object expected after loading:
+# x_data
+
+
+# ------------------------------------------------------------
+# Load training data with protein and clinical variables
+# ------------------------------------------------------------
+
+load(protein_clinical_train_file)
+
+# Example object expected after loading:
+# protein_clinical_train
 
 
 full_data = as.data.frame(mood_disorder_x)
