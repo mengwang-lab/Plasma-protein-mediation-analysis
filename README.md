@@ -44,3 +44,7 @@ Individual-level UK Biobank data used in this study, including plasma proteomic 
 The pQTL summary statistics from the UK Biobank Pharma Proteomics Project (UKB-PPP) can be accessed at: https://metabolomips.org/ukbbpgwas.
 
 No individual-level UK Biobank data are included in this repository.
+
+## Results
+
+The results generated from the analyses in this repository are included in a manuscript that has been pre-accepted by *Med*, and the link of the manuscript will be available soon.
