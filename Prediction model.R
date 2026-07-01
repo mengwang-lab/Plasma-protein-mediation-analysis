@@ -1,18 +1,64 @@
-# Predict secondary disease risk (Renal tubulo diseases) in diabetic patients
-# using mediating proteins identified from the mediation analysis.
-# Model: LASSO-Cox regression, evaluated by 10-fold cross-validation (C-index).
+# =============================================================================
+# Predict secondary disease risk in diabetic patients using mediating proteins
+# identified from mediation analysis.
+#
+# Outcome example: renal tubulo-interstitial diseases
+# Model: LASSO-Cox regression
+# Evaluation: 10-fold cross-validation using C-index
+#
+# Note:
+# Individual-level UK Biobank data and derived analysis datasets are not included
+# in this repository. Users should prepare the required analysis-ready files after
+# obtaining access to UK Biobank data.
+# =============================================================================
+
+
+# ---- Load packages ----------------------------------------------------------
 
 library(glmnet)
 library(caret)
 library(survival)
-
-# --- Step 1: Select top mediating proteins ---
-# Load mediation results and keep proteins with mediation ratio >= 10%
-mediator_protein = read.csv("Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Wrap Up/Result/Train test split significant protein.csv")
-mediator_protein = subset(mediator_protein,ratio >= 0.1)
+library(tidyverse)
 
 
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Wrap Up/Data/protein clinical training id.RData")
+# ---- Define input directories -----------------------------------------------
+
+data_dir <- "data/processed"
+result_dir <- "results/mediation"
+
+
+# ---- Step 1: Select top mediating proteins ----------------------------------
+
+# Mediation result file.
+# Expected columns include:
+#   protein: protein identifier/name
+#   ratio: mediation proportion
+#
+# Only mediators with mediation ratio >= 10% are retained.
+mediator_file <- file.path(
+  result_dir,
+  "train_test_split_significant_proteins.csv"
+)
+
+mediator_protein <- read.csv(mediator_file)
+
+mediator_protein <- mediator_protein %>%
+  dplyr::filter(ratio >= 0.10)
+
+
+# ---- Step 2: Load training protein-clinical dataset --------------------------
+
+# Training-set data containing participant IDs, clinical variables,
+# and plasma protein expression values.
+#
+# Expected object after loading:
+#   protein_clinical_train
+protein_clinical_train_file <- file.path(
+  data_dir,
+  "protein_clinical_training_data.RData"
+)
+
+load(protein_clinical_train_file)
 
 
 
