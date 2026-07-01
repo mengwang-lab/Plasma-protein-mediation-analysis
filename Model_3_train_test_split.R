@@ -2,25 +2,82 @@
 # Mediation analysis: Diabetes (X) -> Protein (mediator) -> Cerebrovascular
 # disease (Y), estimated on the TRAINING split of the UK Biobank cohort.
 #
-# For each candidate protein this script estimates:
-#   - the DIRECT effect of diabetes on the outcome (Cox model), and
-#   - the INDIRECT (mediated) effect through the protein (a * b product),
-#     with a bootstrap distribution for inference.
+# For each candidate protein, this script estimates:
+#   - the DIRECT effect of diabetes on the outcome using a Cox model; and
+#   - the INDIRECT mediated effect through the protein, estimated as the
+#     a * b product with a bootstrap distribution for inference.
 #
 # Designed to run as a SLURM array job: the full protein list is partitioned
 # into chunks, one chunk per array task, and results are written per task.
+#
+# Note:
+# Raw UK Biobank data and derived individual-level analysis datasets are not
+# included in this repository. Users should prepare the required analysis-ready
+# files after obtaining access to UK Biobank data.
 # =============================================================================
 
-# ---- Load inputs ------------------------------------------------------------
-# Training-set sample IDs and the proteomic measurements.
-load("~/UKBioBank/MA CVD MD/Training split mediation/Data/protein clinical training id.RData")
-# Diabetes-associated proteins: provides `protein_list` and adjusted p-values `p_adj`.
-load("~/UKBioBank/MA CVD MD/Training split mediation/Data/Diabetes associated proteins.RData")
-# Outcome-specific analysis data (`full_data`). Switch the load below to change outcome:
-#load("~/UKBioBank/MA CVD MD/Training split mediation/Data/GD as Y diabetes as x wide interval 9 confounders cleaned data.RData")
-#load("~/UKBioBank/MA CVD MD/Training split mediation/Data/HF as Y diabetes as x wide interval 9 confounders cleaned data.RData")
-load("~/UKBioBank/MA CVD MD/Training split mediation/Data/CereD as Y diabetes as x wide interval 9 confounders cleaned data.RData")
 
+# ---- Load packages ----------------------------------------------------------
+
+library(tidyverse)
+library(survival)
+
+
+# ---- Define input directory -------------------------------------------------
+
+data_dir <- "data/processed"
+
+
+# ---- Load inputs ------------------------------------------------------------
+
+# Training-set data containing participant IDs, clinical variables,
+# and plasma protein measurements.
+protein_clinical_train_file <- file.path(
+  data_dir,
+  "protein_clinical_training_data.RData"
+)
+
+load(protein_clinical_train_file)
+
+# Expected object after loading:
+#   protein_clinical_train
+
+
+# Diabetes-associated proteins.
+# Expected objects:
+#   protein_list: vector of diabetes-associated proteins
+#   p_adj: adjusted p-values for protein-diabetes associations
+diabetes_protein_file <- file.path(
+  data_dir,
+  "diabetes_associated_proteins.RData"
+)
+
+load(diabetes_protein_file)
+
+
+# Outcome-specific analysis data.
+# To analyze a different outcome, change `selected_outcome`.
+# Expected object after loading:
+#   full_data
+
+y_files <- list(
+  glomerular_diseases = file.path(
+    data_dir,
+    "y_glomerular_diseases_diabetes_x_wide_interval_cleaned.RData"
+  ),
+  heart_failure = file.path(
+    data_dir,
+    "y_heart_failure_diabetes_x_wide_interval_cleaned.RData"
+  ),
+  cerebrovascular_disease = file.path(
+    data_dir,
+    "y_cerebrovascular_disease_diabetes_x_wide_interval_cleaned.RData"
+  )
+)
+
+selected_outcome <- "cerebrovascular_disease"
+
+load(y_files[[selected_outcome]])
 # ---- Array task index -------------------------------------------------------
 #arr_id = 1
 # Which chunk of proteins this job handles, read from the SLURM array index.
