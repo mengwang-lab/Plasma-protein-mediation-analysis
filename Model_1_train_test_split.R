@@ -1,49 +1,37 @@
 library(tidyverse)
 library(survival)
 
+# ============================================================
+# File paths
+# ============================================================
+# Raw UK Biobank data are not included in this repository.
+# The following files are placeholders for analysis-ready data.
+# Users should generate these files after obtaining access to UK Biobank data.
+# ============================================================
 
-##Diabetes as x
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Diabetes as X cleaned data wide interval.RData")
-#mood_disorder_x
+data_dir <- "data/processed"
 
-##Load training ID
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Wrap Up/Data/protein clinical training id.RData")
+x_file <- file.path(data_dir, "x_diabetes_cleaned_wide_interval.RData")
 
+training_id_file <- file.path(data_dir, "protein_clinical_training_id.RData")
 
+y_files <- list(
+  cerebrovascular_disease = file.path(data_dir, "y_cerebrovascular_disease_cleaned_by_group.RData"),
+  glomerular_diseases     = file.path(data_dir, "y_glomerular_diseases_cleaned_by_group.RData")
+)
 
-
-###Different Y
-###CVD
-
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Orther heart disease as Y cleaned data by group.RData")
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/cerebrovascular disease as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Artery disease as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Ischaemic heart disease as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank cvd MD ND mediation analysis/data/atherosclerosis as Y cleaned data by group.cvdata")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank cvd MD ND mediation analysis/data/heart failure as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Value disorders as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Myocardial Disorders as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Cardiac arrest and arrhythmias as Y cleaned data by group.RData")
-
+# Choose one outcome for analysis
+selected_y <- "cerebrovascular_disease"
+# selected_y <- "glomerular_diseases"
 
 
-##GD
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Renal tubulo diseases as Y cleaned data by group.RData")
-load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Glomerular diseases as Y cleaned data by group.RData")
+# ============================================================
+# Load data
+# ============================================================
 
-##ND
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Parkison's disease as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Systemic atrophies primarily affecting the central nervous system as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Episodic and paroxysmal disorders of the central nervous system as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Diseases of myoneural junction and muscle as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Demyelinating diseases of the central nervous system as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Nerve nerve root and plexus disorders as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/data/Other disorders of the nervous system as Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Data/Alzheimer's disease as Y cleaned data by group.RData")
-
-##RD
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank cvd MD ND mediation analysis/data/Chronic lower respiratory diseases Y cleaned data by group.RData")
-#load("~/Desktop/Postdoc/UKBioBank/UK biobank cvd MD ND mediation analysis/data/Other_respiratory_diseases_principally_affecting_the_interstitium as Y cleaned data by group.RData")
+load(x_file)
+load(training_id_file)
+load(y_files[[selected_y]])
 
 
 cleaned_cvd = as.data.frame(cleaned_GD)
@@ -90,4 +78,4 @@ summary(cox)
 
 
 rm(list=setdiff(ls(), c("full_data","training_id")))
-save.image("~/Desktop/Postdoc/UKBioBank/UK biobank CVD MD ND mediation analysis/Wrap UP/Data/Model 1/GD as Y diabetes as x wide interval 9 confounders cleaned data.RData")
+
