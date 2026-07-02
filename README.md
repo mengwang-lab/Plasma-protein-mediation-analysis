@@ -47,4 +47,4 @@ No individual-level UK Biobank data are included in this repository.
 
 ## Results
 
-The results generated from the analyses in this repository are included in a manuscript that has been pre-accepted by *Med*, and the link of the manuscript will be available soon.
+The results generated from the analyses in this repository are included in a manuscript that has been pre-accepted by *Med*. A preprint version of the manuscript is available at:https://www.medrxiv.org/content/10.1101/2025.08.29.25334726v3.article-info
